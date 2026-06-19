@@ -43,19 +43,19 @@ m1, m2, m3 = st.columns(3)
 
 with m1:
     st.image(
-        "assets/ndvi_map.png",
+        "assets/ndvi_map.jpeg",
         caption="NDVI Map"
     )
 
 with m2:
     st.image(
-        "assets/moisture_stress_map.png",
+        "assets/moisture_stress_map.jpeg",
         caption="Moisture Stress Map"
     )
 
 with m3:
     st.image(
-        "assets/irrigation_map.png",
+        "assets/irrigation_map.jpeg",
         caption="Irrigation Advisory Map"
     )
 
