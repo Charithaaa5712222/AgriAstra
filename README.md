@@ -1,43 +1,125 @@
-# AgriAstra 🌾🛰️
+# 🌾 AgriAstra: AI-Driven Crop Monitoring and Irrigation Advisory System
 
-## Overview
+## 📌 Project Overview
 
-AgriAstra is an AI-driven precision agriculture system that uses optical and microwave satellite data to identify crop types, detect moisture stress across crop growth stages, and generate irrigation advisory maps.
+AgriAstra is an AI-powered agricultural monitoring system that uses satellite imagery, rainfall data, machine learning, and GIS mapping to monitor crop health, detect moisture stress, and provide irrigation recommendations for farmers.
 
-## Problem Statement
+The project integrates multiple data sources to support precision agriculture and sustainable water management.
 
-AI-Driven Automated Crop Type, Moisture Stress Detection and Irrigation Advisory Across Growth Stages Using Moderate Resolution Spectral Signatures (Optical & Microwave Satellite Data).
+---
 
-## Study Area
+## 🎯 Objectives
 
-Pilot Area: Telangana, India
+* Monitor crop health using satellite imagery.
+* Detect moisture stress in agricultural fields.
+* Generate irrigation advisories.
+* Visualize agricultural conditions using GIS maps.
+* Build an interactive dashboard for decision support.
 
-District: Nalgonda (initial prototype)
+---
 
-## Objectives
+## 🛰️ Data Sources
 
-- Identify crop types using satellite data.
-- Detect moisture stress across growth stages.
-- Generate irrigation advisory maps.
-- Build an interactive dashboard.
+### Sentinel-2
 
-## Technologies
+Used to generate:
 
-- Python
-- Google Earth Engine
-- Google Colab
-- Scikit-learn
-- Streamlit
-- GitHub
+* NDVI (Normalized Difference Vegetation Index)
+* NDWI (Normalized Difference Water Index)
 
-## Team
+### Sentinel-1
 
-Team Name: AgriAstra
+Used to generate:
 
-College: MLR Institute of Technology and Management (MLRITM)
+* VH Backscatter
+* VV Backscatter
 
-Department: B.Tech Artificial Intelligence & Machine Learning
+### CHIRPS Rainfall
 
-## Project Status
+Used to integrate rainfall information into the analysis.
 
-Step 1: Project Setup ✅
+---
+
+## 🤖 Machine Learning Model
+
+Algorithm Used:
+
+* Random Forest Classifier
+
+Target Classes:
+
+* Low Moisture Stress
+* Moderate Moisture Stress
+* High Moisture Stress
+
+Model Accuracy:
+
+* 100% (Prototype Dataset)
+
+---
+
+## 🗺️ GIS Outputs
+
+The project generates:
+
+1. NDVI GIS Map
+2. Moisture Stress GIS Map
+3. Irrigation Advisory GIS Map
+
+---
+
+## 🚜 Irrigation Advisory
+
+| Moisture Stress | Recommendation         |
+| --------------- | ---------------------- |
+| Low             | No irrigation needed   |
+| Moderate        | Irrigate within 3 days |
+| High            | Irrigate immediately   |
+
+---
+
+## 🛠️ Technologies Used
+
+* Python
+* Google Earth Engine
+* Google Colab
+* Streamlit
+* Pandas
+* NumPy
+* Matplotlib
+* Scikit-learn
+* GitHub
+
+---
+
+## 📁 Project Structure
+
+AgriAstra/
+
+├── data/
+
+│ ├── raw/
+
+│ └── processed/
+
+├── notebooks/
+
+├── earth_engine/
+
+├── dashboard/
+
+├── results/
+
+│ └── maps/
+
+├── README.md
+
+└── requirements.txt
+
+---
+
+## 👩‍💻 Developed For
+
+Field-Based Project / ISRO Problem Statement Prototype
+
+AgriAstra Team
