@@ -322,12 +322,11 @@ st.markdown("---")
 # ─── AI MODEL + IRRIGATION GAUGE ──────────────────────────────────────────────
 st.markdown("## 🤖 AI Model Performance")
 
-col_l, col_m, col_r = st.columns([1, 2, 2])
+left, right = st.columns([1, 2])
 
-with col_l:
+with left:
     st.metric("Model",      "Random Forest")
-    st.metric("Target",     "Moisture Stress")
-    st.metric("Study Area", "Nalgonda")
+    st.metric("Prediction", "Moisture Stress")
 
 def make_gauge(value, title, bar_color, suffix="%"):
     fig = go.Figure(go.Indicator(
@@ -355,16 +354,13 @@ def make_gauge(value, title, bar_color, suffix="%"):
     fig.update_layout(
         template="plotly_dark",
         paper_bgcolor="#0b1220",
-        height=280,
-        margin=dict(l=30, r=30, t=60, b=10)
+        height=320,
+        margin=dict(l=20, r=20, t=60, b=20)
     )
     return fig
 
-with col_m:
-    st.plotly_chart(make_gauge(100, "Model Accuracy (%)", PALETTE["accent"]),  use_container_width=True)
-
-with col_r:
-    st.plotly_chart(make_gauge(pct_needs_irrig, "Fields Needing Irrigation (%)", PALETTE["warn"]), use_container_width=True)
+with right:
+    st.plotly_chart(make_gauge(100, "Accuracy (%)", "limegreen"), use_container_width=True)
 
 st.markdown("---")
 
@@ -373,27 +369,43 @@ tab1, tab2, tab3 = st.tabs(["🗺️ GIS Maps", "📊 Analytics", "📋 Project 
 
 # ── GIS Maps ──────────────────────────────────────────────────────────────────
 with tab1:
-    st.markdown(f"""
+    st.markdown("""
     <div style="
-      background:linear-gradient(90deg,#14532d,#166534);
-      padding:15px 20px;border-radius:12px;margin-bottom:15px;
-      color:white;box-shadow:0 4px 10px rgba(0,0,0,0.3);
-      border:1px solid rgba(0,200,150,0.2);">
-      <h3 style="margin:0 0 10px;color:white;">🛰️ GIS Dashboard Status</h3>
-      <table style="width:100%;font-size:15px;color:white;border-collapse:collapse;">
-        <tr>
-          <td>🟢 <b>Satellite Layer</b></td><td>Loaded</td>
-          <td>🤖 <b>AI Model</b></td><td>Random Forest</td>
-        </tr>
-        <tr>
-          <td>🗺️ <b>District Boundary</b></td><td>Loaded</td>
-          <td>📍 <b>Study Area</b></td><td>Nalgonda</td>
-        </tr>
-        <tr>
-          <td>🌧️ <b>Rainfall Data</b></td><td>Available</td>
-          <td>📅 <b>Status</b></td><td style="color:{PALETTE["accent"]}">● Online</td>
-        </tr>
-      </table>
+    background:linear-gradient(90deg,#14532d,#166534);
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
+    color:white;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    ">
+    <h3 style="margin-top:0; color:white;">🛰️ GIS Dashboard Status</h3>
+
+    <table style="width:100%;font-size:16px;color:white;border-collapse:collapse;">
+    <tr>
+    <td>🟢 <b>Satellite Layer</b></td>
+    <td>Loaded</td>
+
+    <td>🤖 <b>AI Model</b></td>
+    <td>Random Forest</td>
+    </tr>
+
+    <tr>
+    <td>🗺️ <b>District Boundary</b></td>
+    <td>Loaded</td>
+
+    <td>📍 <b>Study Area</b></td>
+    <td>Nalgonda</td>
+    </tr>
+
+    <tr>
+    <td>🌧️ <b>Rainfall Data</b></td>
+    <td>Available</td>
+
+    <td>📅 <b>Status</b></td>
+    <td>Online</td>
+    </tr>
+    </table>
+
     </div>
     """, unsafe_allow_html=True)
 
