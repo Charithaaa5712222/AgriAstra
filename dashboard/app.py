@@ -1,3 +1,5 @@
+import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 import pandas as pd
 
@@ -15,22 +17,77 @@ df = load_data()
 
 st.markdown("""
 <style>
-.main{
-    padding-top:1rem;
+
+/* Main App */
+.stApp{
+    background:#0b1220;
+    color:#f8fafc;
 }
-.metric-card{
-    background-color:#f8f9fa;
-    padding:20px;
-    border-radius:15px;
-    border:1px solid #e6e6e6;
+
+/* Remove top padding */
+.block-container{
+    padding-top:1.5rem;
+    padding-bottom:1rem;
 }
+
+/* Hero Banner */
 .hero{
-    padding:20px;
-    border-radius:15px;
-    background:linear-gradient(90deg,#1b5e20,#43a047);
-    color:white;
+    background:linear-gradient(135deg,#0f766e,#166534);
+    padding:35px;
+    border-radius:18px;
     text-align:center;
+    color:white;
+    box-shadow:0px 8px 25px rgba(0,0,0,0.35);
 }
+
+/* Section Titles */
+h1,h2,h3,h4{
+    color:#ffffff;
+}
+
+/* Metric Cards */
+div[data-testid="metric-container"]{
+    background:#16213E;
+    border:1px solid #2E3B55;
+    padding:18px;
+    border-radius:16px;
+    box-shadow:0 4px 12px rgba(0,0,0,.35);
+}
+
+div[data-testid="metric-container"]:hover{
+    transform:translateY(-4px);
+    transition:.3s;
+}
+
+/* Tabs */
+.stTabs [data-baseweb="tab"]{
+    background:#16213E;
+    border-radius:10px;
+    color:white;
+    margin-right:8px;
+}
+
+.stTabs [aria-selected="true"]{
+    background:#00b894;
+    color:white;
+}
+
+/* Dataframe */
+[data-testid="stDataFrame"]{
+    border-radius:12px;
+}
+
+/* Expanders */
+.streamlit-expanderHeader{
+    background:#16213E;
+    border-radius:10px;
+}
+
+/* Footer */
+footer{
+    visibility:hidden;
+}
+
 </style>
 """,unsafe_allow_html=True)
 
@@ -43,7 +100,9 @@ st.markdown("""
 <div class="hero">
 <h1>🌾 AgriAstra</h1>
 <h3>AI-Driven Crop Monitoring & Irrigation Advisory System</h3>
-<h4>Smart Agriculture using Satellite Imagery, AI and GIS</h4>
+<p style="font-size:20px;">
+Smart Agriculture using Satellite Imagery • Machine Learning • GIS
+</p>
 </div>
 """,unsafe_allow_html=True)
 
@@ -138,7 +197,24 @@ with tab2:
 
     st.subheader("Moisture Stress Distribution")
 
-    st.bar_chart(stress_counts)
+    fig = px.pie(
+        values=stress_counts.values,
+        names=stress_counts.index,
+        hole=0.55,
+        title="Moisture Stress Distribution"
+    )
+
+    fig.update_layout(
+        template="plotly_dark",
+        paper_bgcolor="#0b1220",
+        plot_bgcolor="#0b1220",
+        font=dict(color="white")
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
 
     st.subheader("Dataset Preview")
 
