@@ -199,6 +199,7 @@ tab1,tab2,tab3 = st.tabs(
 )
 
 # Assuming 'tab1' and other tabs are defined above this block
+# Assuming 'tab1' and other tabs are defined above this block
 with tab1:
     st.subheader("🌍 Interactive GIS Map")
 
@@ -290,6 +291,42 @@ with tab1:
 
     # Add Map Controls
     folium.LayerControl().add_to(m)
+
+    # Custom HTML Legend Setup
+    legend_html = """
+    <div style="
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    width: 220px;
+    background-color: rgba(15,23,42,0.92);
+    border:2px solid #00ff66;
+    border-radius:10px;
+    padding:12px;
+    font-size:14px;
+    color:white;
+    z-index:9999;
+    box-shadow:0 4px 12px rgba(0,0,0,0.5);
+    ">
+
+    <h4 style="margin-top:0;color:#00ff66;">🗺️ Legend</h4>
+
+    <p>🟢 <b>Low Stress</b></p>
+
+    <p>🟡 <b>Moderate Stress</b></p>
+
+    <p>🔴 <b>High Stress</b></p>
+
+    <hr>
+
+    <p>🟩 <b>Nalgonda Boundary</b></p>
+
+    <p>📍 <b>Study Area</b></p>
+
+    </div>
+    """
+
+    m.get_root().html.add_child(folium.Element(legend_html))
 
     # Render Folium Map in Streamlit
     st_folium(
