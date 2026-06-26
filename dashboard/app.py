@@ -1,5 +1,8 @@
 import folium
 from streamlit_folium import st_folium
+from folium.plugins import Fullscreen
+from folium.plugins import MiniMap
+from folium.plugins import MousePosition
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
@@ -200,11 +203,24 @@ with tab1:
     st.subheader("🌍 Interactive GIS Map")
 
     m = folium.Map(
-        location=[17.0575, 79.2671],
-        zoom_start=10,
-        tiles=None
+    location=[17.0575, 79.2671],
+    zoom_start=10,
+    tiles=None,
+    control_scale=True
+)
     )
+    Fullscreen(
+    position="topright",
+    title="Full Screen",
+    title_cancel="Exit Full Screen",
+    force_separate_button=True
+).add_to(m)
 
+MiniMap(
+    toggle_display=True
+).add_to(m)
+
+MousePosition().add_to(m)
     folium.TileLayer(
         tiles="Esri WorldImagery",
         attr="Esri",
