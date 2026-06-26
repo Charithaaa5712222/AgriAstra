@@ -139,25 +139,52 @@ st.markdown("---")
 
 st.markdown("## 🤖 AI Model Performance")
 
-a1,a2,a3 = st.columns(3)
+left,right = st.columns([1,2])
 
-a1.metric(
-    "Accuracy",
-    "100%"
-)
+with left:
 
-a2.metric(
-    "Model",
-    "Random Forest"
-)
+    st.metric(
+        "Model",
+        "Random Forest"
+    )
 
-a3.metric(
-    "Prediction Target",
-    "Moisture Stress"
-)
+    st.metric(
+        "Prediction",
+        "Moisture Stress"
+    )
+
+with right:
+
+    gauge = go.Figure(
+        go.Indicator(
+            mode="gauge+number",
+            value=100,
+            title={"text":"Accuracy (%)"},
+            gauge={
+                "axis":{"range":[0,100]},
+                "bar":{"color":"limegreen"},
+                "steps":[
+                    {"range":[0,50],"color":"#8B0000"},
+                    {"range":[50,80],"color":"orange"},
+                    {"range":[80,100],"color":"green"}
+                ]
+            }
+        )
+    )
+
+    gauge.update_layout(
+        template="plotly_dark",
+        paper_bgcolor="#0b1220",
+        height=320,
+        margin=dict(l=20,r=20,t=60,b=20)
+    )
+
+    st.plotly_chart(
+        gauge,
+        use_container_width=True
+    )
 
 st.markdown("---")
-
 tab1,tab2,tab3 = st.tabs(
     [
         "🗺️ GIS Maps",
