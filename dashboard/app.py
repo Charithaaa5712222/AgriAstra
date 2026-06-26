@@ -211,6 +211,21 @@ with tab1:
         name="Satellite"
     ).add_to(m)
 
+    folium.GeoJson(
+    "geojson/nalgonda.geojson",
+    name="Nalgonda Boundary",
+    style_function=lambda feature: {
+        "fillColor": "#00FF00",
+        "color": "#00FF00",
+        "weight": 3,
+        "fillOpacity": 0.15
+    },
+    tooltip=folium.GeoJsonTooltip(
+        fields=["shapeName"],
+        aliases=["District:"]
+    )
+).add_to(m)
+
     folium.Marker(
         [17.0575, 79.2671],
         popup="Nalgonda District",
