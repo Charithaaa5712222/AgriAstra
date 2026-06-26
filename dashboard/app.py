@@ -1,6 +1,8 @@
 import folium
 from streamlit_folium import st_folium
-from folium.plugins import Fullscreen, MiniMap, MousePosition
+from folium.plugins import Fullscreen
+from folium.plugins import MiniMap
+from folium.plugins import MousePosition
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
@@ -17,13 +19,6 @@ def load_data():
     return pd.read_csv("data/processed/agriastra_final_dataset.csv")
 
 df = load_data()
-
-# Convert dataframe to CSV format in memory for download feature
-@st.cache_data
-def convert_df(dataframe):
-    return dataframe.to_csv(index=False).encode('utf-8')
-
-csv_data = convert_df(df)
 
 st.markdown("""
 <style>
@@ -69,13 +64,17 @@ div[data-testid="metric-container"]:hover{
     transition:.3s;
 }
 
-/* Radio Navigation Styling in Sidebar */
-div[data-testid="stSidebarUserContent"] .stRadio div[role="radiogroup"] label {
-    background: #16213E;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 6px;
-    color: white;
+/* Tabs */
+.stTabs [data-baseweb="tab"]{
+    background:#16213E;
+    border-radius:10px;
+    color:white;
+    margin-right:8px;
+}
+
+.stTabs [aria-selected="true"]{
+    background:#00b894;
+    color:white;
 }
 
 /* Dataframe */
@@ -121,10 +120,25 @@ and GIS visualization to monitor crop health and generate irrigation advisories.
 
 c1,c2,c3,c4 = st.columns(4)
 
-c1.metric("📍 Samples", len(df))
-c2.metric("🟢 Low Stress", int(stress_counts.get("Low",0)))
-c3.metric("🟡 Moderate Stress", int(stress_counts.get("Moderate",0)))
-c4.metric("🔴 High Stress", int(stress_counts.get("High",0)))
+c1.metric(
+    "📍 Samples",
+    len(df)
+)
+
+c2.metric(
+    "🟢 Low Stress",
+    int(stress_counts.get("Low",0))
+)
+
+c3.metric(
+    "🟡 Moderate Stress",
+    int(stress_counts.get("Moderate",0))
+)
+
+c4.metric(
+    "🔴 High Stress",
+    int(stress_counts.get("High",0))
+)
 
 st.markdown("---")
 
@@ -133,23 +147,31 @@ st.markdown("## 🤖 AI Model Performance")
 left,right = st.columns([1,2])
 
 with left:
-    st.metric("Model", "Random Forest")
-    st.metric("Prediction", "Moisture Stress")
+
+    st.metric(
+        "Model",
+        "Random Forest"
+    )
+
+    st.metric(
+        "Prediction",
+        "Moisture Stress"
+    )
 
 with right:
+
     gauge = go.Figure(
         go.Indicator(
             mode="gauge+number",
-            value=94.2,  # Configured to exact real-world baseline metric performance value
-            title={"text":"Accuracy (%)", "font": {"color": "white"}},
+            value=100,
+            title={"text":"Accuracy (%)"},
             gauge={
-                "axis":{"range":[0,100], "tickcolor": "white"},
-                "bar":{"color":"#00FF66"},
-                "bgcolor": "rgba(30, 41, 59, 0.5)",
+                "axis":{"range":[0,100]},
+                "bar":{"color":"limegreen"},
                 "steps":[
-                    {"range":[0,50],"color":"#DC2626"},
-                    {"range":[50,80],"color":"#EA580C"},
-                    {"range":[80,100],"color":"#166534"}
+                    {"range":[0,50],"color":"#8B0000"},
+                    {"range":[50,80],"color":"orange"},
+                    {"range":[80,100],"color":"green"}
                 ]
             }
         )
@@ -158,28 +180,28 @@ with right:
     gauge.update_layout(
         template="plotly_dark",
         paper_bgcolor="#0b1220",
-        height=280,
-        margin=dict(l=30,r=30,t=50,b=20)
+        height=320,
+        margin=dict(l=20,r=20,t=60,b=20)
     )
 
-    st.plotly_chart(gauge, use_container_width=True)
+    st.plotly_chart(
+        gauge,
+        use_container_width=True
+    )
 
 st.markdown("---")
+tab1,tab2,tab3 = st.tabs(
+    [
+        "🗺️ GIS Maps",
+        "📊 Analytics",
+        "📋 Project Info"
+    ]
+)
 
-# 1. Create the vertical menu in the sidebar
-with st.sidebar:
-    st.markdown("<h2 style='color:#00ff66; text-align:center;'>🛰️ AgroGIS</h2>", unsafe_allow_html=True)
-    
-    page = st.radio(
-        "Navigation",
-        ["📊 Dashboard", "📈 Analytics", "📋 Project Info"],
-        label_visibility="collapsed"
-    )
-    
-    st.markdown("<p style='text-align:center; color:#94a3b8; margin-top:50px;'>v2.4.0 • Active Mode</p>", unsafe_allow_html=True)
-
-# 2. Swap out tab blocks for clear structural layout switch blocks
-if page == "📊 Dashboard":
+# Assuming 'tab1' and other tabs are defined above this block
+# Assuming 'tab1' and other tabs are defined above this block
+# Assuming 'tab1' and other tabs are defined above this block
+with tab1:
     # GIS Dashboard Status Banner Block
     st.markdown("""
     <div style="
@@ -243,11 +265,22 @@ if page == "📊 Dashboard":
     MousePosition().add_to(m)
     
     # OpenStreetMap
-    folium.TileLayer("OpenStreetMap", name="OpenStreetMap").add_to(m)
+    folium.TileLayer(
+        "OpenStreetMap",
+        name="OpenStreetMap"
+    ).add_to(m)
+
     # CartoDB Light
-    folium.TileLayer("CartoDB Positron", name="Light Map").add_to(m)
+    folium.TileLayer(
+        "CartoDB Positron",
+        name="Light Map"
+    ).add_to(m)
+
     # CartoDB Dark
-    folium.TileLayer("CartoDB Dark_Matter", name="Dark Map").add_to(m)
+    folium.TileLayer(
+        "CartoDB Dark_Matter",
+        name="Dark Map"
+    ).add_to(m)
 
     # Esri Satellite
     folium.TileLayer(
@@ -317,143 +350,196 @@ if page == "📊 Dashboard":
     z-index:9999;
     box-shadow:0 4px 12px rgba(0,0,0,0.5);
     ">
+
     <h4 style="margin-top:0;color:#00ff66;">🗺️ Legend</h4>
+
     <p>🟢 <b>Low Stress</b></p>
+
     <p>🟡 <b>Moderate Stress</b></p>
+
     <p>🔴 <b>High Stress</b></p>
-    <hr style="border: 0; border-top: 1px solid #2E3B55;">
+
+    <hr>
+
     <p>🟩 <b>Nalgonda Boundary</b></p>
+
     <p>📍 <b>Study Area</b></p>
+
     </div>
     """
+
     m.get_root().html.add_child(folium.Element(legend_html))
 
     # Render Folium Map in Streamlit
-    st_folium(m, use_container_width=True, height=500)
+    st_folium(
+        m,
+        use_container_width=True,
+        height=500
+    )
 
     st.markdown("---")
 
-    # GIS Visualization components
+    # GIS Visualization components kept inside tab1 to preserve layout
     st.subheader("🛰️ GIS Visualization")
 
     m1, m2, m3 = st.columns(3)
 
     with m1:
-        st.image("dashboard/assets/ndvi_map.jpeg", caption="🌱 NDVI Map", use_container_width=True)
-    with m2:
-        st.image("dashboard/assets/moisture_stress_map.jpeg", caption="💧 Moisture Stress Map", use_container_width=True)
-    with m3:
-        st.image("dashboard/assets/irrigation_map.jpeg", caption="🚜 Irrigation Advisory Map", use_container_width=True)
+        st.image(
+            "dashboard/assets/ndvi_map.jpeg",
+            caption="🌱 NDVI Map",
+            use_container_width=True
+        )
 
-elif page == "📈 Analytics":
+    with m2:
+        st.image(
+            "dashboard/assets/moisture_stress_map.jpeg",
+            caption="💧 Moisture Stress Map",
+            use_container_width=True
+        )
+
+    with m3:
+        st.image(
+            "dashboard/assets/irrigation_map.jpeg",
+            caption="🚜 Irrigation Advisory Map",
+            use_container_width=True
+        )
+with tab2:
+
     st.subheader("📊 Analytics Dashboard")
 
     left, right = st.columns(2)
 
     with left:
+
         fig = px.pie(
             values=stress_counts.values,
             names=stress_counts.index,
             hole=0.55,
-            title="Relative Moisture Stress Share Breakdown",
-            color=stress_counts.index,
-            color_discrete_map={"Low": "#166534", "Moderate": "#EA580C", "High": "#DC2626"}
+            title="Moisture Stress Distribution"
         )
+
         fig.update_layout(
             template="plotly_dark",
             paper_bgcolor="#0b1220",
             plot_bgcolor="#0b1220",
             font=dict(color="white")
         )
-        st.plotly_chart(fig, use_container_width=True)
+
+        st.plotly_chart(
+            fig,
+            use_container_width=True
+        )
 
     with right:
+
         fig2 = px.bar(
             x=stress_counts.index,
             y=stress_counts.values,
             color=stress_counts.index,
-            title="Stress Stratification Frequency Counts",
-            color_discrete_map={"Low": "#166534", "Moderate": "#EA580C", "High": "#DC2626"}
+            title="Stress Count"
         )
+
         fig2.update_layout(
             template="plotly_dark",
             paper_bgcolor="#0b1220",
             plot_bgcolor="#0b1220",
-            xaxis_title="Stress Level Classification",
-            yaxis_title="Total Surveyed Samples"
+            xaxis_title="Stress Level",
+            yaxis_title="Samples"
         )
-        st.plotly_chart(fig2, use_container_width=True)
 
-    st.markdown("---")
-    st.subheader("📈 Spatial Coverage Summary Metrics")
-
-    analytics_c1, analytics_c2, analytics_c3, analytics_c4 = st.columns(4)
-    analytics_c1.metric("Total Samples Tracked", len(df))
-    analytics_c2.metric("Low Risk Area", int(stress_counts.get("Low",0)))
-    analytics_c3.metric("Moderate Risk Area", int(stress_counts.get("Moderate",0)))
-    analytics_c4.metric("High Emergency Area", int(stress_counts.get("High",0)))
-
-    st.markdown("---")
-    
-    # Download button integration for dataset extraction data
-    dl_col1, dl_col2 = st.columns([3, 1])
-    with dl_col1:
-        st.subheader("📋 Core GIS Vector Point Records")
-    with dl_col2:
-        st.download_button(
-            label="📥 Export Dataset (CSV)",
-            data=csv_data,
-            file_name='agriastra_gis_metrics.csv',
-            mime='text/csv',
+        st.plotly_chart(
+            fig2,
             use_container_width=True
         )
 
-    st.dataframe(df.head(20), use_container_width=True)
+    st.markdown("---")
 
-elif page == "📋 Project Info":
+    st.subheader("📈 Summary")
+
+    c1, c2, c3, c4 = st.columns(4)
+
+    c1.metric(
+        "Total Samples",
+        len(df)
+    )
+
+    c2.metric(
+        "Low",
+        int(stress_counts.get("Low",0))
+    )
+
+    c3.metric(
+        "Moderate",
+        int(stress_counts.get("Moderate",0))
+    )
+
+    c4.metric(
+        "High",
+        int(stress_counts.get("High",0))
+    )
+
+    st.markdown("---")
+
+    st.subheader("📋 Dataset Preview")
+
+    st.dataframe(
+        df.head(20),
+        use_container_width=True
+    )
+
+with tab3:
+
     st.subheader("Project Information")
 
-    st.success("Project Name: AgriAstra Dashboard Environment")
+    st.success("""
+Project Name: AgriAstra
+""")
+
     st.info("""
-    **Domain Focus:** Precision Hydro-Agriculture Mapping  
+Domain:
+Precision Agriculture
 
-    **Geographical Focus Bounds:** Nalgonda District, State Boundary Infrastructure  
+Study Area:
+Nalgonda District
 
-    **Remote Sensing Data Sources:** • Sentinel-1 SAR Micro-wave Backscatter  
-    • Sentinel-2 Optical Multi-Spectral Radiometry  
-    • CHIRPS High-Resolution Daily Precipitation Estimates  
+Data Sources:
+• Sentinel-1 SAR
+• Sentinel-2 Optical
+• CHIRPS Rainfall
 
-    **Software Architecture Engine:** • Google Earth Engine API Ecosystem  
-    • GIS Vectorization and Spatial Boundary Processing  
-    • Random Forest Classification Machine Learning Core  
-    """)
+Technologies:
+• Google Earth Engine
+• GIS Mapping
+• Random Forest
+• Python
+• Streamlit
+• GitHub
+""")
 
 st.markdown("---")
 
-st.markdown("## 🚜 Automatic Spatial Irrigation Advisories")
+st.markdown("## 🚜 Irrigation Recommendations")
 
-with st.expander("View Active Algorithmic Recommendations", expanded=True):
-    st.success("🟢 Low Stress Registered Status → Normal capillary saturation. No active supplementary irrigation required.")
-    st.warning("🟡 Moderate Stress Registered Status → Moisture deficit tracked. Schedule regular distribution systems cycle within 72 hours.")
-    st.error("🔴 High Stress Registered Status → Critical wilting baseline risk. Initialize priority corrective localized flow lines immediately.")
+with st.expander(
+    "View Recommendations"
+):
 
-# Custom polished footer containing developer and team attribution specifications
-st.markdown("""
-<div style="
-    text-align: center;
-    padding: 20px;
-    margin-top: 30px;
-    background-color: #16213E;
-    border-top: 2px solid #2E3B55;
-    border-radius: 12px;
-    color: #94a3b8;
-    font-size: 14px;
-">
-    <p style="margin: 0; color: #00ff66; font-weight: bold; font-size:16px;">🌾 AgriAstra Smart Precision Farming Platform</p>
-    <p style="margin: 5px 0 12px 0;">Machine Learning Framework for Scalable Water Resource Management & Stress Diagnostics</p>
-    <p style="margin: 0; font-size: 13px;">
-        👥 <b>Project Team:</b> GIS Research & Analytics Group | 🛠️ <b>Technology Stack:</b> Python, Streamlit, Folium, Plotly Engine
-    </p>
-    <p style="margin-top: 10px; font-size: 11px; color: #64748b;">© 2026 AgriAstra Spatial Systems. Protected under Open Data Open-source Attribution standards.</p>
-</div>
-""", unsafe_allow_html=True)
+    st.success(
+        "🟢 Low → No irrigation needed"
+    )
+
+    st.warning(
+        "🟡 Moderate → Irrigate within 3 days"
+    )
+
+    st.error(
+        "🔴 High → Irrigate immediately"
+    )
+
+st.markdown("---")
+
+st.markdown(
+    "<center><h4>🌾 AgriAstra | Precision Agriculture using AI + GIS</h4></center>",
+    unsafe_allow_html=True
+)
