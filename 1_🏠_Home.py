@@ -168,9 +168,9 @@ with c1:
     text-align:center;
     box-shadow:0 4px 10px rgba(0,0,0,.35);
     ">
-        <h4 style="color:white;">📍 Samples</h4>
-        <h1 style="color:#38bdf8;">{len(df)}</h1>
-        <p style="color:#cbd5e1;">Total Records</p>
+        <h4 style="color:white;font-size:16px;margin-bottom:8px;">📍 Samples</h4>
+        <p style="color:#38bdf8;font-size:42px;font-weight:700;margin:0;line-height:1.2;">{len(df)}</p>
+        <p style="color:#cbd5e1;margin-top:8px;">Total Records</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -184,9 +184,9 @@ with c2:
     text-align:center;
     box-shadow:0 4px 10px rgba(0,0,0,.35);
     ">
-        <h4 style="color:white;">🟢 Low Stress</h4>
-        <h1 style="color:#22c55e;">{int(stress_counts.get("Low", 0))}</h1>
-        <p style="color:#cbd5e1;">Healthy Crops</p>
+        <h4 style="color:white;font-size:16px;margin-bottom:8px;">🟢 Low Stress</h4>
+        <p style="color:#22c55e;font-size:42px;font-weight:700;margin:0;line-height:1.2;">{int(stress_counts.get("Low", 0))}</p>
+        <p style="color:#cbd5e1;margin-top:8px;">Healthy Crops</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -200,9 +200,9 @@ with c3:
     text-align:center;
     box-shadow:0 4px 10px rgba(0,0,0,.35);
     ">
-        <h4 style="color:white;">🟡 Moderate Stress</h4>
-        <h1 style="color:#facc15;">{int(stress_counts.get("Moderate", 0))}</h1>
-        <p style="color:#cbd5e1;">Needs Monitoring</p>
+        <h4 style="color:white;font-size:16px;margin-bottom:8px;">🟡 Moderate Stress</h4>
+        <p style="color:#facc15;font-size:42px;font-weight:700;margin:0;line-height:1.2;">{int(stress_counts.get("Moderate", 0))}</p>
+        <p style="color:#cbd5e1;margin-top:8px;">Needs Monitoring</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -216,9 +216,9 @@ with c4:
     text-align:center;
     box-shadow:0 4px 10px rgba(0,0,0,.35);
     ">
-        <h4 style="color:white;">🔴 High Stress</h4>
-        <h1 style="color:#ef4444;">{int(stress_counts.get("High", 0))}</h1>
-        <p style="color:#cbd5e1;">Immediate Action</p>
+        <h4 style="color:white;font-size:16px;margin-bottom:8px;">🔴 High Stress</h4>
+        <p style="color:#ef4444;font-size:42px;font-weight:700;margin:0;line-height:1.2;">{int(stress_counts.get("High", 0))}</p>
+        <p style="color:#cbd5e1;margin-top:8px;">Immediate Action</p>
     </div>
     """, unsafe_allow_html=True)
 
